@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Route::post('/register', [JWTController::class, 'register']);
+
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    // return view('dashboard');
+    Route::get('/dashboard', [PostController::class, 'index'])->name('dashboard');
+    Route::get('/edit/{id}', [PostController::class, 'edit'])->name('post.edit');
+    Route::post('/edit/{id}', [PostController::class, 'update'])->name('post.update');
+    Route::get('/create', [PostController::class, 'create'])->name('post.create');
+    Route::post('/create', [PostController::class, 'store'])->name('post.store');
 });
